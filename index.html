@@ -413,6 +413,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
 <script>
+    //navigator.serviceWorker.register("./serviceWorker.js");
 
     function isNumeric(value) {
         return /^-?\d+$/.test(value);
@@ -424,6 +425,7 @@
     })}, 120000)
     let itemNumberPerPage = 25;
     let currentPage = isNumeric(new URL(document.location.href).hash.slice(1)) ? new URL(document.location.href).hash.slice(1) : 0;
+    let totalPages = undefined
     let isFooterInit = false
 
     window.addEventListener("keydown", (event) => {
@@ -577,6 +579,7 @@
     }
 
     function createLeaflet(response, target) {
+        totalPages = response.totalPages
         createFooter(response)
         const leafletItemsArray = response.content.map(function (leafletItem) {
             const positionClass = getRandomInt(2) === 1 ? "left" : "right"
@@ -604,23 +607,27 @@
 
     function onChangePage(event) {
         if (event.target.value === "<") {
-            currentPage = currentPage - 1;
-            let currentUrl = new URL(document.location.href)
-            if (!isNumeric(currentUrl.hash.slice(1))) {
-                currentUrl.hash = `${currentPage}`
-            } else {
-                currentUrl.hash = `${parseInt(currentUrl.hash.slice(1)) - 1}`
+            if (currentPage - 1 >= 0) {
+                currentPage = currentPage - 1;
+                let currentUrl = new URL(document.location.href)
+                if (!isNumeric(currentUrl.hash.slice(1))) {
+                    currentUrl.hash = `${currentPage}`
+                } else {
+                    currentUrl.hash = `${parseInt(currentUrl.hash.slice(1)) - 1}`
+                }
+                document.location.href = currentUrl.href
             }
-            document.location.href = currentUrl.href
         } else if (event.target.value === ">") {
-            currentPage = currentPage + 1;
-            let currentUrl = new URL(document.location.href)
-            if (!isNumeric(currentUrl.hash.slice(1))) {
-                currentUrl.hash = `${currentPage}`
-            } else {
-                currentUrl.hash = `${parseInt(currentUrl.hash.slice(1)) + 1}`
+            if (currentPage + 1 < totalPages) {
+                currentPage = currentPage + 1;
+                let currentUrl = new URL(document.location.href)
+                if (!isNumeric(currentUrl.hash.slice(1))) {
+                    currentUrl.hash = `${currentPage}`
+                } else {
+                    currentUrl.hash = `${parseInt(currentUrl.hash.slice(1)) + 1}`
+                }
+                document.location.href = currentUrl.href
             }
-            document.location.href = currentUrl.href
         } else if (event.target.value === "...") {
             return
         } else {
