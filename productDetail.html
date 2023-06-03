@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Digital leaflet</title>
+    <link rel="stylesheet" href="projectStyle.css">
+</head>
+<body class="main">
+<main class="leaflet-detail-container">
+</main>
+</body>
+<!-- Font awesome for icons -->
+<script src="https://kit.fontawesome.com/02e50a72f2.js" crossorigin="anonymous"></script>
+<script>
+    function onBackButtonClick() {
+        history.back();
+    }
+</script>
+<script type="module">
+    import createRatingView from "./createRatingView.js";
+    function getPriceView(price, discount) {
+        if (discount !== 0) {
+            let priceWithDiscount = (100 - discount) * (price / 100)
+            return `<div class="leaflet-detail-info-price">Price:\n<div class="price-content">${price} Kč</div>\n<div class="price-with-discount-content">${Math.floor(priceWithDiscount)} Kč</div></div><div class="leaflet-detail-info-discount">Discount: ${discount}%!</div>`
+        } else {
+            return `<div class="leaflet-detail-info-price"}">Price: ${price} Kč</div>`
+        }
+    }
+    function showDetail(detailInfo, leafletContainer) {
+            leafletContainer.innerHTML = `
+                <div class="leaflet-detail-drawable-container">
+                <div class="leaflet-detail-back-button" onclick="onBackButtonClick()" id="back-button"><i class="fa-sharp fa-solid fa-arrow-left"></i></div>
+                <img class="leaflet-detail-image" src="${detailInfo.imageUrl}"/>
+                </div>
+                <div class="leaflet-detail-info-container">
+                <div class="leaflet-detail-info-title">${detailInfo.title}</div>
+                <div class="leaflet-detail-info-rating-container">
+                ${createRatingView(detailInfo.rating)}
+                </div>
+                <div class="leaflet-detail-info-description">${detailInfo.description}</div>
+                ${getPriceView(detailInfo.price, detailInfo.discount)}
+                </div>`
+    }
+    function onDetailOpen() {
+        const leafletContainer = document.querySelector("main.leaflet-detail-container");
+        let currentUrl = new URL(document.location.href)
+        if (currentUrl.searchParams.has("productId")) {
+            const productId = currentUrl.searchParams.get("productId")
+
+            const myRequest = new Request(`http://localhost:8335/productCatalog/${productId}/get`);
+
+            fetch(myRequest)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
+                    return response.json();
+                })
+                .then((response) => {
+                    showDetail(response, leafletContainer);
+                });
+        }
+    }
+
+    onDetailOpen()
+</script>
+</html>
