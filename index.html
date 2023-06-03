@@ -33,21 +33,37 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
 <script>
     function onDetailOpen(productId) {
-    window.open(`/digital_leaflet/productDetail.html?productId=${productId}`, "_self");
-}
+        window.open(`/digital_leaflet/productDetail.html?productId=${productId}`, "_self");
+    }
+
+    $('#email-form').submit((e) => {
+        localStorage.setItem("emailHaveBeenSent", "true")
+        e.preventDefault()
+        $.modal.close();
+    });
 </script>
 <script type="module">
     import createRatingView from "./createRatingView.js";
+
     //navigator.serviceWorker.register("serviceWorker.js");
 
     function isNumeric(value) {
         return /^-?\d+$/.test(value);
     }
 
-    setTimeout(() => {$('#email-form-container').modal({
-        fadeDuration: 150,
-        fadeDelay: 0.80
-    })}, 120000)
+    function showModal() {
+        if (localStorage.getItem("emailHaveBeenSent") !== "true") {
+            setTimeout(() => {
+                $('#email-form-container').modal({
+                    fadeDuration: 150,
+                    fadeDelay: 0.80
+                })
+            }, 12000)
+        }
+    }
+
+    showModal()
+
     let itemNumberPerPage = 25;
     let currentPage = isNumeric(new URL(document.location.href).hash.slice(1)) ? new URL(document.location.href).hash.slice(1) : 0;
     let totalPages = undefined
