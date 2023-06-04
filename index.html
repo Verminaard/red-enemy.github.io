@@ -9,7 +9,7 @@
 <body class="main">
 <header class="leaflet-main-header">
     <h1 class="leaflet-first-header-title">Digital&nbsp;&nbsp;&nbsp;leaflet</h1>
-    <h2 class="leaflet-second-header-title">From 10.05.223</h2>
+    <h2 class="leaflet-second-header-title">From 04.06.2023</h2>
 </header>
 <dialog id="email-form-container" class="modal email-form-modal">
     <label for="email-form" class="email-form-text">Please, leave your e-mail to miss nothing! =)</label>
@@ -76,6 +76,16 @@
         } else if (event.key === "ArrowRight") {
             let arrowRightButton = document.querySelector("#navigateForwardButton")
             arrowRightButton.click()
+        }
+    });
+
+    window.addEventListener("popstate", (event) => {
+        let currentUrl = new URL(document.location.href)
+        if (!isNumeric(currentUrl.hash.slice(1))) {
+            currentPage = 0
+            getLeafletItems({page: currentPage, size: itemNumberPerPage})
+        } else {
+            getLeafletItems({page: parseInt(currentUrl.hash.slice(1)), size: itemNumberPerPage})
         }
     });
 
@@ -220,9 +230,10 @@
             return
         } else {
             currentPage = event.target.value - 1
+            let currentUrl = new URL(document.location.href)
+            currentUrl.hash = `${currentPage}`
+            document.location.href = currentUrl.href
         }
-
-        getLeafletItems({page: currentPage, size: itemNumberPerPage})
     }
 
     function getLeafletItems(pagination = {page: currentPage, size: itemNumberPerPage}) {
