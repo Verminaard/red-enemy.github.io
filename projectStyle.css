@@ -554,8 +554,8 @@ label.item-number-label {
     }
 
     .leaflet-detail-back-button {
-        width: 28px;
-        height: 28px;
+        width: 2vw;
+        height: 2vw;
         font-size: 26px;
         background: #5c84ff;
         margin-left: 36px;
