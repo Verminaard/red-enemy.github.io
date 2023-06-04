@@ -23,18 +23,17 @@
     align-content: center;
 }
 
-@media (max-width: 650px) {
+@media (max-width: 350px) {
     .leaflet-first-header-title {
         display: grid;
         justify-content: center;
         margin-block-start: 8px;
-        font-size: 28px;
+        font-size: 10vw;
         font-weight: lighter;
         filter: drop-shadow(6px 0px 20px #98b2ff);
         font-family: "Open Sans", sans-serif;
         align-content: center;
         color: #5c84ff;
-        letter-spacing: 5px;
         padding-top: 4vh;
         text-transform: uppercase;
     }
@@ -45,12 +44,16 @@
         align-content: center;
         padding: 0px 0px 5vh !important;
         padding-block-start: 20px;
-        font-size: 20px;
+        font-size: 8vw;
         font-weight: normal;
         font-family: "Open Sans", sans-serif;
         color: #6d91ff;
         letter-spacing: 2px;
         text-transform: uppercase;
+    }
+
+    .main {
+        font-size: 6vw;
     }
 
     .leaflet-container {
@@ -68,9 +71,113 @@
         grid-template-columns: 30fr 15fr 15fr 30fr;
         grid-template-rows: repeat(8, 1fr);
     }
+
+    .numeric-page-selector {
+        display: none !important;
+    }
+
+    .price-content {
+        color: lightgray;
+        font-size: 3.1vw;
+        text-decoration: line-through black;
+    }
+
+
+    .leaflet-item-discount-info {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        text-align: center;
+        background-color: #ffd500;
+        padding: 4px;
+        filter: opacity(90%);
+        margin: 6px;
+        font-weight: bold;
+        font-size: 3.1vw;
+        color: #B5002F;
+        border-radius: 10px;
+        grid-row-start: 5;
+        grid-row-end: 7;
+    }
+
+}
+
+@media (max-width: 650px) and (min-width: 350px) {
+    .price-content {
+        color: lightgray;
+        font-size: 14px;
+        text-decoration: line-through black;
+    }
+
+    .leaflet-first-header-title {
+        display: grid;
+        justify-content: center;
+        margin-block-start: 8px;
+        font-size: 8vw;
+        font-weight: lighter;
+        filter: drop-shadow(6px 0px 20px #98b2ff);
+        font-family: "Open Sans", sans-serif;
+        align-content: center;
+        color: #5c84ff;
+        letter-spacing: 5px;
+        padding-top: 4vh;
+        text-transform: uppercase;
+    }
+
+
+    .leaflet-item-discount-info {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        background-color: #ffd500;
+        padding: 4px;
+        filter: opacity(90%);
+        margin: 6px;
+        font-weight: bold;
+        color: #B5002F;
+        border-radius: 10px;
+        grid-row-start: 5;
+        grid-row-end: 7;
+    }
+
+    .leaflet-second-header-title {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        padding: 0px 0px 5vh !important;
+        padding-block-start: 20px;
+        font-size: 5vw;
+        font-weight: normal;
+        font-family: "Open Sans", sans-serif;
+        color: #6d91ff;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .leaflet-container {
+        display: grid;
+        grid-gap: 12px;
+        margin-left: 6px;
+        margin-right: 6px;
+        grid-template-columns: repeat(1, 1fr);
+        margin-bottom: 62px;
+    }
+
+    .leaflet-item {
+        display: grid;
+        cursor: pointer;
+        grid-template-columns: 30fr 15fr 15fr 30fr;
+        grid-template-rows: repeat(8, 1fr);
+    }
 }
 
 @media (min-width: 650px) {
+
+    .price-content {
+        color: lightgray;
+        font-size: 14px;
+        text-decoration: line-through black;
+    }
 
     .leaflet-first-header-title {
         display: grid;
@@ -85,6 +192,22 @@
         letter-spacing: 7px;
         padding-top: 4vh;
         text-transform: uppercase;
+    }
+
+
+    .leaflet-item-discount-info {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        background-color: #ffd500;
+        padding: 4px;
+        filter: opacity(90%);
+        margin: 6px;
+        font-weight: bold;
+        color: #B5002F;
+        border-radius: 10px;
+        grid-row-start: 5;
+        grid-row-end: 7;
     }
 
     .leaflet-second-header-title {
@@ -104,9 +227,9 @@
     .leaflet-container {
         display: grid;
         grid-gap: 12px;
-        margin-left: 50px;
-        margin-right: 50px;
-        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        margin-left: 0.6vw;
+        margin-right: 0.6vw;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
         margin-bottom: 62px;
     }
 
@@ -124,26 +247,6 @@
         transform: scale(1.02, 1.02);
         transition: transform 0.4s ease-out;
     }
-}
-
-.leaflet-item-discount-info {
-    display: grid;
-    justify-content: center;
-    align-content: center;
-    background-color: #ffd500;
-    padding: 12px;
-    filter: opacity(90%);
-    margin: 12px;
-    color: #B5002F;
-    border-radius: 10px;
-    grid-row-start: 5;
-    grid-row-end: 7;
-}
-
-.price-content {
-    color: lightgray;
-    font-size: 14px;
-    text-decoration: line-through black;
 }
 
 .price-with-discount-content {
@@ -175,7 +278,7 @@
     }
 }
 
-@media (max-width: 460px) {
+@media (max-width: 460px) and (min-width: 350px) {
     .leaflet-item-price {
         display: grid;
         justify-content: center;
@@ -199,6 +302,37 @@
         font-family: "Open Sans", sans-serif;
         font-size: 16px;
         font-weight: bold;
+    }
+}
+
+@media (max-width: 350px) {
+    .leaflet-item-price {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        background-color: rgba(161, 0, 47, 0.9);
+        border: 2px rgba(0, 0, 0, 0.9) solid;
+        color: azure;
+        font-size: 3.5vw;
+        text-align: center;
+        border-radius: 10px;
+        grid-column-start: 2;
+        grid-column-end: 4;
+    }
+
+    .leaflet-item-title {
+        grid-row-start: 2;
+        grid-row-end: 6;
+        margin-left: 4px;
+        text-align: center;
+        margin-right: 4px;
+        font-family: "Open Sans", sans-serif;
+        font-size: 4.5vw;
+        font-weight: bold;
+    }
+
+    .leaflet-item-rating-container {
+        display: none;
     }
 }
 
@@ -377,16 +511,204 @@ label.item-number-label {
     transition: all 2s;
 }
 
-.leaflet-detail-container {
-    display: grid;
-    grid-gap: 12px;
-    margin-left: 50px;
-    margin-right: 50px;
-    grid-template-columns: 8fr 10fr;
-    grid-template-rows: 95vh;
-    background-color: azure;
-    border: 1px lightgray solid;
-    border-radius: 10px;
+@media (min-width: 750px) {
+    .leaflet-detail-container {
+        display: grid;
+        grid-gap: 12px;
+        margin-left: 50px;
+        margin-right: 50px;
+        grid-template-columns: 8fr 10fr;
+        grid-template-rows: minmax(95vh, auto);
+        background-color: azure;
+        border: 1px lightgray solid;
+        border-radius: 10px;
+    }
+
+    .leaflet-detail-info-description {
+        font-size: 2.7vh;
+        font-weight: lighter;
+        font-family: "Open Sans", sans-serif;
+        color: black;
+        text-align: justify;
+        padding-top: 3vh;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .leaflet-detail-info-container {
+        display: grid;
+        grid-template-rows: repeat(5, auto);
+        margin-right: 30px;
+    }
+
+    .leaflet-detail-image {
+        display: grid;
+        width: 40vw;
+        height: 40vw;
+        justify-self: center;
+        align-self: center;
+        grid-row-start: 1;
+        grid-row-end: 3;
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+
+    .leaflet-detail-back-button {
+        width: 28px;
+        height: 28px;
+        font-size: 26px;
+        background: #5c84ff;
+        margin-left: 36px;
+        margin-top: 5vh;
+        cursor: pointer;
+        padding: 10px;
+        filter: brightness(150%);
+        transition: all 0.5s;
+        color: #171717;
+        border-radius: 60px;
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        justify-self: left;
+        align-self: start;
+        grid-row-start: 1;
+        grid-row-end: 2;
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+
+    .leaflet-detail-info-price {
+        display: grid;
+        width: 24vw;
+        font-size: 1.5vw;
+        background-color: rgba(161, 0, 47, 0.9);
+        border: 2px rgba(0, 0, 0, 0.9) solid;
+        color: azure;
+        align-self: center;
+        justify-self: center;
+        text-align: center;
+        border-radius: 10px;
+        align-content: center;
+        margin: 0 0 3vh;
+    }
+
+    .leaflet-detail-info-discount {
+        display: grid;
+        width: 24vw;
+        height: 4vw;
+        font-size: 1.5vw;
+        justify-content: center;
+        align-self: center;
+        justify-self: center;
+        align-content: center;
+        background-color: #ffd500;
+        filter: opacity(90%);
+        color: #B5002F;
+        border-radius: 10px;
+        margin: 0 0 3vh;
+    }
+}
+
+@media (max-width: 750px) {
+    .leaflet-detail-container {
+        display: grid;
+        grid-gap: 12px;
+        margin-left: 2px;
+        margin-right: 2px;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        background-color: azure;
+        border: 1px lightgray solid;
+        border-radius: 10px;
+    }
+
+    .leaflet-detail-info-description {
+        font-size: 3vw;
+        font-weight: lighter;
+        font-family: "Open Sans", sans-serif;
+        color: black;
+        text-align: justify;
+        padding-top: 3vh;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .leaflet-detail-info-container {
+        display: grid;
+        grid-template-rows: repeat(5, auto);
+    }
+
+    .leaflet-detail-image {
+        display: grid;
+        width: 40vw;
+        height: 40vw;
+        margin-top: 40px;
+        justify-self: center;
+        align-self: center;
+        grid-row-start: 1;
+        grid-row-end: 3;
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+
+    .leaflet-detail-back-button {
+        width: 5vw;
+        height: 5vw;
+        font-size: 5vw;
+        background: #5c84ff;
+        margin-left: 3vw;
+        margin-top: 3vw;
+        cursor: pointer;
+        padding: 10px;
+        filter: brightness(150%);
+        transition: all 0.5s;
+        color: #171717;
+        border-radius: 60px;
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        justify-self: left;
+        align-self: start;
+        grid-row-start: 1;
+        grid-row-end: 2;
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+
+    .leaflet-detail-info-price {
+        display: grid;
+        width: 40vw;
+        font-size: 2.5vw;
+        background-color: rgba(161, 0, 47, 0.9);
+        border: 2px rgba(0, 0, 0, 0.9) solid;
+        color: azure;
+        align-self: center;
+        justify-self: center;
+        text-align: center;
+        border-radius: 10px;
+        align-content: center;
+        margin: 0 0 3vh;
+    }
+
+    .leaflet-detail-info-discount {
+        display: grid;
+        width: 40vw;
+        font-size: 2.5vw;
+        justify-content: center;
+        align-self: center;
+        justify-self: center;
+        align-content: center;
+        background-color: #ffd500;
+        filter: opacity(90%);
+        color: #B5002F;
+        border-radius: 10px;
+        margin: 0 0 3vh;
+    }
+    .price-content-detail {
+        color: lightgray;
+        font-size: 2vw;
+        text-decoration: line-through black;
+    }
 }
 
 .leaflet-detail-drawable-container {
@@ -395,105 +717,22 @@ label.item-number-label {
     grid-template-columns: 1fr;
 }
 
-.leaflet-detail-image {
-    display: grid;
-    height: 65%;
-    justify-self: center;
-    align-self: center;
-    grid-row-start: 1;
-    grid-row-end: 3;
-    grid-column-start: 1;
-    grid-column-end: 2;
-}
-
-.leaflet-detail-back-button {
-    width: 28px;
-    height: 28px;
-    font-size: 26px;
-    background: #5c84ff;
-    margin-left: 36px;
-    margin-top: 5vh;
-    cursor: pointer;
-    padding: 10px;
-    filter: brightness(150%);
-    transition: all 0.5s;
-    color: #171717;
-    border-radius: 60px;
-    display: grid;
-    justify-content: center;
-    align-content: center;
-    justify-self: left;
-    align-self: start;
-    grid-row-start: 1;
-    grid-row-end: 2;
-    grid-column-start: 1;
-    grid-column-end: 2;
-}
-
 .leaflet-detail-back-button:hover {
     filter: brightness(170%);
     transform: scale(1.1, 1.1);
 }
 
 .leaflet-detail-info-title {
-    font-size: 46px;
+    font-size: 2.9vw;
     font-weight: lighter;
     filter: drop-shadow(0px 0px 6px #c1d0ff);
     font-family: "Open Sans", sans-serif;
     align-content: center;
     color: #5c84ff;
-    letter-spacing: 7px;
+    letter-spacing: 2px;
     text-align: center;
-    margin-left: 40px;
-    margin-right: 40px;
     padding-top: 4vh;
     text-transform: uppercase;
-}
-
-.leaflet-detail-info-description {
-    font-size: 18px;
-    font-weight: lighter;
-    font-family: "Open Sans", sans-serif;
-    color: black;
-    text-align: justify;
-    padding-top: 4vh;
-    padding-left: 30px;
-    padding-right: 30px;
-}
-
-.leaflet-detail-info-price {
-    display: grid;
-    width: 300px;
-    height: 54px;
-    background-color: rgba(161, 0, 47, 0.9);
-    border: 2px rgba(0, 0, 0, 0.9) solid;
-    color: azure;
-    align-self: center;
-    justify-self: center;
-    text-align: center;
-    border-radius: 10px;
-    justify-self: center;
-    align-content: center;
-}
-
-.leaflet-detail-info-container {
-    display: grid;
-    grid-template-rows: 2fr 1fr 8fr 1fr 1fr 2fr;
-    margin-right: 30px;
-}
-
-.leaflet-detail-info-discount {
-    display: grid;
-    width: 300px;
-    height: 54px;
-    justify-content: center;
-    align-self: center;
-    justify-self: center;
-    align-content: center;
-    background-color: #ffd500;
-    filter: opacity(90%);
-    color: #B5002F;
-    border-radius: 10px;
 }
 
 .leaflet-detail-info-rating-container {

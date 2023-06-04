@@ -22,7 +22,7 @@
     function getPriceView(price, discount) {
         if (discount !== 0) {
             let priceWithDiscount = (100 - discount) * (price / 100)
-            return `<div class="leaflet-detail-info-price">Price:\n<div class="price-content">${price} Kč</div>\n<div class="price-with-discount-content">${Math.floor(priceWithDiscount)} Kč</div></div><div class="leaflet-detail-info-discount">Discount: ${discount}%!</div>`
+            return `<div class="leaflet-detail-info-price">Price:\n<div class="price-content-detail">${price} Kč</div>\n<div class="price-with-discount-content">${Math.floor(priceWithDiscount)} Kč</div></div><div class="leaflet-detail-info-discount">Discount: ${discount}%!</div>`
         } else {
             return `<div class="leaflet-detail-info-price"}">Price: ${price} Kč</div>`
         }
@@ -34,16 +34,24 @@
                 <img class="leaflet-detail-image" src="${detailInfo.imageUrl}"/>
                 </div>
                 <div class="leaflet-detail-info-container">
-                <div class="leaflet-detail-info-title">${detailInfo.title}</div>
+                <p class="leaflet-detail-info-title">${detailInfo.title}</p>
                 <div class="leaflet-detail-info-rating-container">
                 ${createRatingView(detailInfo.rating)}
                 </div>
-                <div class="leaflet-detail-info-description">${detailInfo.description}</div>
+                <p class="leaflet-detail-info-description">${detailInfo.description}</p>
                 ${getPriceView(detailInfo.price, detailInfo.discount)}
+                </div>`
+    }
+
+    function showEmptyDetail(leafletContainer) {
+        leafletContainer.innerHTML = `
+                <div class="leaflet-detail-drawable-container">
+                <div class="leaflet-detail-back-button" onclick="onBackButtonClick()" id="back-button"><i class="fa-sharp fa-solid fa-arrow-left"></i></div>
                 </div>`
     }
     function onDetailOpen() {
         const leafletContainer = document.querySelector("main.leaflet-detail-container");
+        showEmptyDetail(leafletContainer)
         let currentUrl = new URL(document.location.href)
         if (currentUrl.searchParams.has("productId")) {
             const productId = currentUrl.searchParams.get("productId")
@@ -57,6 +65,9 @@
                     }
 
                     return response.json();
+                })
+                .catch((e) => {
+                  alert("No data available :c")
                 })
                 .then((response) => {
                     showDetail(response, leafletContainer);
