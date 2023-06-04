@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Digital leaflet</title>
     <link rel="stylesheet" href="projectStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css">
 </head>
 <body class="main">
 <header class="leaflet-main-header">
     <h1 class="leaflet-first-header-title">Digital&nbsp;&nbsp;&nbsp;leaflet</h1>
     <h2 class="leaflet-second-header-title">From 04.06.2023</h2>
 </header>
+<!--Popup dialog-->
 <dialog id="email-form-container" class="modal email-form-modal">
-    <label for="email-form" class="email-form-text">Please, leave your e-mail to miss nothing! =)</label>
+    <label class="email-form-text">Please, leave your e-mail to miss nothing! =)</label>
     <form id="email-form" class="email-form-container">
         <label for="email">
             <input id="email" type="email" placeholder="e-mail" class="email-form-input" autofocus required>
@@ -30,34 +32,63 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 <!-- jQuery Modal -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
+<!--Not modal script for inlined click listeners-->
 <script>
     function onDetailOpen(productId) {
         window.open(`/digital_leaflet/productDetail.html?productId=${productId}`, "_self");
     }
 
-    $('#email-form').submit((e) => {
-        localStorage.setItem("emailHaveBeenSent", "true")
-        e.preventDefault()
-        $.modal.close();
-    });
 </script>
+<!--Main script-->
 <script type="module">
     import createRatingView from "./createRatingView.js";
-
-    try {
-        navigator.serviceWorker.register("serviceWorker.js");
-    } catch (e) {
-        console.error("Can not initialize service worker. Probably, there is no https connection.")
-    }
-
+    import isNumeric from "./isNumeric.js";
+    import getRandomInt from "./getRandomInt.js";
     import {serverHostName, serverPortNumber} from "./config.js";
 
-    function isNumeric(value) {
-        return /^-?\d+$/.test(value);
+    let itemNumberPerPage = 25;
+    let currentPage = isNumeric(new URL(document.location.href).hash.slice(1)) ? new URL(document.location.href).hash.slice(1) : 0;
+    let totalPages = undefined
+    let isFooterInit = false
+
+    function initListeners() {
+        $('#email-form').submit((e) => {
+            localStorage.setItem("emailHaveBeenSent", "true")
+            e.preventDefault()
+            $.modal.close();
+        });
+
+        window.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowLeft") {
+                let arrowLeftButton = document.querySelector("#navigateBackButton")
+                arrowLeftButton.click();
+            } else if (event.key === "ArrowRight") {
+                let arrowRightButton = document.querySelector("#navigateForwardButton")
+                arrowRightButton.click()
+            }
+        });
+
+        window.addEventListener("popstate", () => {
+            let currentUrl = new URL(document.location.href)
+            if (!isNumeric(currentUrl.hash.slice(1))) {
+                currentPage = 0
+                getLeafletItems({page: currentPage, size: itemNumberPerPage})
+            } else {
+                getLeafletItems({page: parseInt(currentUrl.hash.slice(1)), size: itemNumberPerPage})
+            }
+        });
     }
 
-    function showModal() {
+    function registerServiceWorker() {
+        try {
+            navigator.serviceWorker.register("serviceWorker.js");
+        } catch (e) {
+            console.error("Can not initialize service worker. Probably, there is no https connection.")
+        }
+    }
+
+    function initModal() {
+        //show modal after 12 seconds if user not didn't send the email information
         if (localStorage.getItem("emailHaveBeenSent") !== "true") {
             setTimeout(() => {
                 $('#email-form-container').modal({
@@ -66,37 +97,6 @@
                 })
             }, 12000)
         }
-    }
-
-    showModal()
-
-    let itemNumberPerPage = 25;
-    let currentPage = isNumeric(new URL(document.location.href).hash.slice(1)) ? new URL(document.location.href).hash.slice(1) : 0;
-    let totalPages = undefined
-    let isFooterInit = false
-
-    window.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowLeft") {
-            let arrowLeftButton = document.querySelector("#navigateBackButton")
-            arrowLeftButton.click();
-        } else if (event.key === "ArrowRight") {
-            let arrowRightButton = document.querySelector("#navigateForwardButton")
-            arrowRightButton.click()
-        }
-    });
-
-    window.addEventListener("popstate", (event) => {
-        let currentUrl = new URL(document.location.href)
-        if (!isNumeric(currentUrl.hash.slice(1))) {
-            currentPage = 0
-            getLeafletItems({page: currentPage, size: itemNumberPerPage})
-        } else {
-            getLeafletItems({page: parseInt(currentUrl.hash.slice(1)), size: itemNumberPerPage})
-        }
-    });
-
-    function getRandomInt(max) {
-        return Math.floor(Math.random() * max);
     }
 
     function createNavButton(classString, textContent, elementId) {
@@ -111,10 +111,8 @@
         return button
     }
 
-    function createFooter(response) {
-        const leafletFooter = document.querySelector("#leafletFooter");
-        if (!isFooterInit) {
-            leafletFooter.innerHTML = `<div class="leaflet-footer-pagination-section">
+    function initFooter(leafletFooter) {
+        leafletFooter.innerHTML = `<div class="leaflet-footer-pagination-section">
         <div class="leaflet-footer-pagination-section-itemsperpage">
             <label for="itemsNumber" class="item-number-label">Items number per page:</label>
             <select name="itemsNumber" class="item-number-content" id="itemsNumber">
@@ -129,6 +127,12 @@
         <div id="paginationContainer" class="leaflet-footer-pagination-section-pages">
         </div>
     </div>`
+    }
+
+    function createFooter(response) {
+        const leafletFooter = document.querySelector("#leafletFooter");
+        if (!isFooterInit) {
+            initFooter(leafletFooter)
             isFooterInit = true
         }
         const paginationContainer = document.querySelector("#paginationContainer");
@@ -186,6 +190,7 @@
         totalPages = response.totalPages
         createFooter(response)
         const leafletItemsArray = response.content.map(function (leafletItem) {
+            //generate random position for elements
             const positionClass = getRandomInt(2) === 1 ? "left" : "right"
             const priceRowPositionStart = getRandomInt(5) + 2
             const itemId = leafletItem.id
@@ -206,10 +211,16 @@
 
     function onChangeItemNumberPerPage(event) {
         itemNumberPerPage = event.target.value
-        getLeafletItems({page: currentPage, size: event.target.value})
+        //todo: add current page setter
+        currentPage = 0
+        let currentUrl = new URL(document.location.href)
+        currentUrl.hash = `${currentPage}`
+        document.location.href = currentUrl.href
+        getLeafletItems({page: 0, size: event.target.value})
     }
 
     function onChangePage(event) {
+        //saves current page number into the url hash value
         if (event.target.value === "<") {
             if (currentPage - 1 >= 0) {
                 currentPage = currentPage - 1;
@@ -233,7 +244,7 @@
                 document.location.href = currentUrl.href
             }
         } else if (event.target.value === "...") {
-            return
+            return null
         } else {
             currentPage = event.target.value - 1
             let currentUrl = new URL(document.location.href)
@@ -243,6 +254,7 @@
     }
 
     function getLeafletItems(pagination = {page: currentPage, size: itemNumberPerPage}) {
+        //can not work properly because of virtual adapters on the user's pc
         if (window.navigator.onLine !== true) {
             alert("No internet connection! Page contains cached information.")
         }
@@ -263,7 +275,14 @@
             });
     }
 
-    getLeafletItems()
+    function initPage() {
+        registerServiceWorker()
+        initListeners()
+        initModal()
+        getLeafletItems()
+    }
+
+    initPage()
 </script>
 </body>
 </html>

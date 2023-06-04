@@ -81,7 +81,7 @@
         display: grid;
         justify-content: center;
         align-content: center;
-        padding: 0px 0px 5vh !important;
+        padding: 0 0 5vh !important;
         padding-block-start: 20px;
         font-size: 8vw;
         font-weight: normal;
@@ -222,7 +222,7 @@
         display: grid;
         justify-content: center;
         align-content: center;
-        padding: 0px 0px 5vh !important;
+        padding: 0 0 5vh !important;
         padding-block-start: 20px;
         font-size: 5vw;
         font-weight: normal;
@@ -331,7 +331,7 @@
         display: grid;
         justify-content: center;
         align-content: center;
-        padding: 0px 0px 5vh !important;
+        padding: 0 0 5vh !important;
         padding-block-start: 20px;
         font-size: 26px;
         font-weight: normal;
@@ -369,6 +369,7 @@
 .price-with-discount-content {
     color: white;
 }
+
 @media (min-width: 460px) {
     .leaflet-item-title {
         grid-row-start: 2;
@@ -782,6 +783,7 @@ label.item-number-label {
         border-radius: 10px;
         margin: 0 0 3vh;
     }
+
     .price-content-detail {
         color: lightgray;
         font-size: 2vw;

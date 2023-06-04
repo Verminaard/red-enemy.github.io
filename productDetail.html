@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Digital leaflet</title>
+    <title>Digital leaflet - item detail</title>
     <link rel="stylesheet" href="projectStyle.css">
 </head>
 <body class="main">
@@ -12,24 +12,28 @@
 </body>
 <!-- Font awesome for icons -->
 <script src="https://kit.fontawesome.com/02e50a72f2.js" crossorigin="anonymous"></script>
+<!--Not modal script for inlined click listeners-->
 <script>
     function onBackButtonClick() {
         history.back();
     }
 </script>
+<!--Main script-->
 <script type="module">
     import createRatingView from "./createRatingView.js";
     import {serverHostName, serverPortNumber} from "./config.js";
+
     function getPriceView(price, discount) {
         if (discount !== 0) {
             let priceWithDiscount = (100 - discount) * (price / 100)
             return `<div class="leaflet-detail-info-price">Price:\n<div class="price-content-detail">${price} Kč</div>\n<div class="price-with-discount-content">${Math.floor(priceWithDiscount)} Kč</div></div><div class="leaflet-detail-info-discount">Discount: ${discount}%!</div>`
         } else {
-            return `<div class="leaflet-detail-info-price"}">Price: ${price} Kč</div>`
+            return `<div class="leaflet-detail-info-price">Price: ${price} Kč</div>`
         }
     }
+
     function showDetail(detailInfo, leafletContainer) {
-            leafletContainer.innerHTML = `
+        leafletContainer.innerHTML = `
                 <div class="leaflet-detail-drawable-container">
                 <div class="leaflet-detail-back-button" onclick="onBackButtonClick()" id="back-button"><i class="fa-sharp fa-solid fa-arrow-left"></i></div>
                 <img class="leaflet-detail-image" src="${detailInfo.imageUrl}"/>
@@ -50,6 +54,7 @@
                 <div class="leaflet-detail-back-button" onclick="onBackButtonClick()" id="back-button"><i class="fa-sharp fa-solid fa-arrow-left"></i></div>
                 </div>`
     }
+
     function onDetailOpen() {
         const leafletContainer = document.querySelector("main.leaflet-detail-container");
         showEmptyDetail(leafletContainer)
@@ -67,8 +72,8 @@
 
                     return response.json();
                 })
-                .catch((e) => {
-                  alert("No data available :c")
+                .catch(() => {
+                    alert("No data available :c")
                 })
                 .then((response) => {
                     showDetail(response, leafletContainer);
