@@ -46,6 +46,7 @@
     import createRatingView from "./createRatingView.js";
 
     navigator.serviceWorker.register("serviceWorker.js");
+    import {serverHostName, serverPortNumber} from "./config.js";
 
     function isNumeric(value) {
         return /^-?\d+$/.test(value);
@@ -242,7 +243,7 @@
         }
         const leafletContainer = document.querySelector("main.leaflet-container");
 
-        const myRequest = pagination === undefined ? new Request("http://localhost:8335/leaflet/list") : new Request(`http://localhost:8335/leaflet/list?page=${pagination.page}&size=${pagination.size}`);
+        const myRequest = pagination === undefined ? new Request(`http://${serverHostName}:${serverPortNumber}/leaflet/list`) : new Request(`http://${serverHostName}:${serverPortNumber}/leaflet/list?page=${pagination.page}&size=${pagination.size}`);
 
         fetch(myRequest)
             .then((response) => {

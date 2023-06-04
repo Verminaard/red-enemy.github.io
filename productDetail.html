@@ -19,6 +19,7 @@
 </script>
 <script type="module">
     import createRatingView from "./createRatingView.js";
+    import {serverHostName, serverPortNumber} from "./config.js";
     function getPriceView(price, discount) {
         if (discount !== 0) {
             let priceWithDiscount = (100 - discount) * (price / 100)
@@ -56,7 +57,7 @@
         if (currentUrl.searchParams.has("productId")) {
             const productId = currentUrl.searchParams.get("productId")
 
-            const myRequest = new Request(`http://localhost:8335/productCatalog/${productId}/get`);
+            const myRequest = new Request(`http://${serverHostName}:${serverPortNumber}/productCatalog/${productId}/get`);
 
             fetch(myRequest)
                 .then((response) => {
