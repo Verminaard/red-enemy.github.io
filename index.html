@@ -35,6 +35,7 @@
 <!--Not modal script for inlined click listeners-->
 <script>
     function onDetailOpen(productId) {
+        //remove the digital_leaflet prefix in production
         window.open(`/digital_leaflet/productDetail.html?productId=${productId}`, "_self");
     }
 
